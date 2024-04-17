@@ -15,11 +15,17 @@ print(env.get_bed_angle())
 env.set_bed_angle(10)
 print(env.get_bed_angle())
 print(env.camera.getPosition())
-# print(env.camera.getCameraInfo())
-# print(env.camera.getRGB("intrinsic"))
-
-# env.camera.initializeDepthEXRWithIntrinsic()
-# env.camera.initializeRGBWithIntrinsic()
-# print(env.camera.getPointCloudWithDepth())
-# while True:
-# env.step()
+print(env.camera.getCameraInfo())
+# np.save(
+#     "/home/hcn9/rcareworld_workspace/rcare_py/pyrcareworld/Dressing/rgb.npy",
+#     env.camera.getRGB("wh"),
+# )
+# np.save(
+#     "/home/hcn9/rcareworld_workspace/rcare_py/pyrcareworld/Dressing/depth.npy",
+#     env.camera.getDepthEXR("wh"),
+# )
+# np.save(
+#     "/home/hcn9/rcareworld_workspace/rcare_py/pyrcareworld/Dressing/world.npy",
+#     env.camera.getLocalToWorldMatrix(),
+# )
+# pcd = env.camera.arraysToPointCloud("data/point_cloud.pcd")
