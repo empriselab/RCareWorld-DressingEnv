@@ -6,18 +6,21 @@ import open3d as o3d
 
 
 if __name__ == "__main__":
-    # d = np.load("data/depth.npy")
+    d = np.load("data/depth.npy")
     r = np.load("data/rgb.npy")
-    # local_to_world_matrix = np.load("data/world.npy")
+    r2 = np.load("data/rgb2.npy")
+    local_to_world_matrix = np.load("data/world.npy")
     # intrinsic_matrix = [600, 0, 0, 0, 600, 0, 240, 240, 1]
     # nd_main_intrinsic_matrix = np.reshape(intrinsic_matrix, [3, 3]).T
 
-    # rgb = o3d.geometry.Image(r)
+    # rgb = o3d.geometry.Image(r2)
     # depth = o3d.geometry.Image(d)
     # PLT.imshow(r)
     # PLT.show()
-    pcd = o3d.io.read_point_cloud("data/point_cloud.pcd")
-    # pcd = image_array_to_point_cloud(r, d, 60, local_to_world_matrix)
+    # pcd = o3d.io.read_point_cloud("data/point_cloud.pcd")
+
+    pcd = image_array_to_point_cloud(r, d, 60, local_to_world_matrix)
+    pcd = pcd.voxel_down_sample(voxel_size=0.01)
     o3d.visualization.draw_geometries([pcd])
 
     # test with just depth
