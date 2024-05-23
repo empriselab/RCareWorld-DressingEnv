@@ -73,8 +73,8 @@ class Camera(RCareWorldBaseObject):
         image_rgb = np.frombuffer(image_byte, dtype=np.uint8)
         reshaped_image_rgb = image_rgb.reshape(self.height, self.width, 3)
         # upside down and convert bgr to rgb
-        # reshaped_image_rgb = np.flipud(reshaped_image_rgb)
-        reshaped_image_rgb = np.flipud(reshaped_image_rgb)[:, :, ::-1]
+        reshaped_image_rgb = np.flipud(reshaped_image_rgb)
+        # reshaped_image_rgb = np.flipud(reshaped_image_rgb)[:, :, ::-1]
         return reshaped_image_rgb
 
     def getDepthEXR(self, mode="wh"):

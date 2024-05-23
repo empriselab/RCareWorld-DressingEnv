@@ -2,6 +2,8 @@ from pyrcareworld.envs import RCareWorld
 import numpy as np
 import pybullet as p
 import math
+import open3d as o3d
+from pyrcareworld.utils.depth_processor import *
 
 
 class DressingEnv(RCareWorld):
@@ -34,10 +36,10 @@ class DressingEnv(RCareWorld):
             name="bed_actuation",
             is_in_scene=True,
         )
-        robot = self.create_robot(
+        self.robot = self.create_robot(
             id=self.robot_id,
             gripper_list=["6397870"],
-            robot_name="franka_panda",
+            robot_name="franka-panda",
             base_pos=[0, 0, 1],
         )
 
@@ -45,6 +47,14 @@ class DressingEnv(RCareWorld):
         self.camera = self.create_camera(
             id=self.camera_id,
             name="scene_camera",
+            intrinsic_matrix=self.intrinsic_matrix,
+            width=480,
+            height=480,
+        )
+        self.local_to_world_matrix = self.camera.getLocalToWorldMatrix()
+        self.wheelchair = self.create_robot(
+            id=98765,
+            robot_name="wheelchair",
         )
 
     def get_state(self):
@@ -85,6 +95,9 @@ class DressingEnv(RCareWorld):
             )
 
     def set_bed_angle(self, angle, duration=25):
+        """
+        @param velocity: the angle at which to move the hospital bed to
+        """
         self.bed.setActuationAngle(angle, duration)
 
     def get_bed_angle(self):
@@ -92,3 +105,15 @@ class DressingEnv(RCareWorld):
 
     def step(self):
         self._step()
+
+    def move_wheelchair(self, velocity):
+        """
+        @param velocity: the velocity at which to move the wheelchair
+        """
+        self.wheelchair.setJointVelocitiesDirectly([velocity, 0])
+
+    def stop_wheelchair(self):
+        """
+        stops the wheelchair's movement
+        """
+        self.wheelchair.setJoinVelocitiesDirectly([0, 0])
